@@ -1,6 +1,6 @@
-import { injectable } from 'tsyringe';
+import { Injectable } from './utils/decorators';
 
-@injectable()
+@Injectable()
 export class AppService {
   public getDelayTime(): number {
     return 2;

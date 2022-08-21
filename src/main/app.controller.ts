@@ -1,10 +1,9 @@
 import { AppService } from '@main/app.service';
-import { inject, singleton } from 'tsyringe';
-import { IpcInvoke, IpcOn } from './utils/decorators';
+import { Controller, Inject, IpcInvoke, IpcOn } from './utils/decorators';
 
-@singleton()
+@Controller()
 export class AppController {
-  constructor(@inject(AppService) private appService: AppService) {
+  constructor(@Inject(AppService) private appService: AppService) {
   }
 
   @IpcOn('reply-msg')
