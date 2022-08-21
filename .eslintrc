@@ -1,0 +1,49 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "extends": ["airbnb", "airbnb-typescript"],
+  "plugins": ["react", "react-hooks"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "no-empty": "off",
+    "no-await-in-loop": "off",
+    "no-promise-executor-return": "off",
+    "no-restricted-syntax": "off",
+    "max-len": "off",
+    "object-curly-newline": "off",
+    "class-methods-use-this": "off",
+    "arrow-parens": ["error", "as-needed"],
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-duplicates": "off",
+    "import/named": "off",
+    "import/export": "off",
+    "import/order": "off",
+    "import/no-cycle": "off",
+    "import/no-relative-packages": "off",
+    "import/no-named-as-default": "off",
+    "import/no-useless-path-segments": "off",
+    "import/no-self-import": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/lines-between-class-members": [
+      "error", "always", {
+        "exceptAfterSingleLine": true
+      }
+    ],
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-throw-literal": "off",
+    "@typescript-eslint/space-before-function-paren": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off"
+  }
+}
