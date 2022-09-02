@@ -11,7 +11,10 @@
     "vite",
     "electron-react-example",
     "electron-vite-example",
-    "electron-react-vite-example"
+    "electron-react-vite-example",
+    "electron-vite-template",
+    "electron-react-template",
+    "electron-react-vite-template"
   ],
   "scripts": {
     "dev": "tsx scripts/watch.ts"
