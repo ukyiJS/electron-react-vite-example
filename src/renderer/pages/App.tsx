@@ -5,13 +5,12 @@ export default function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    window.app.invoke('send-msg', 'test').then(e => console.log('### send-msg', e));
-    const replyId = window.app.on('reply-msg', e => {
-      console.log('### reply-msg', e);
-    });
-    return () => {
-      window.app.off(replyId);
-    };
+    window.app.invoke('send-msg', 'test message').then(message => console.log('send-msg', message));
+  }, []);
+
+  useEffect(() => {
+    const replyId = window.app.on('reply-msg', message => console.log('### reply-msg', message));
+    return () => window.app.off(replyId);
   }, []);
 
   return (
