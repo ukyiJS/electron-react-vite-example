@@ -22,10 +22,8 @@ const config = ({ name, configFile }) => /** @type {InlineConfig} */({
   logLevel: 'info',
   build: {
     rollupOptions: {
-      rollupOptions: {
-        output: {
-          entryFileNames: `${name}.js`,
-        },
+      output: {
+        entryFileNames: `${name}.js`,
       },
     },
   },
