@@ -8,7 +8,7 @@ export const IpcInvoke = (event: string): MethodDecorator => {
   return (target, propertyName) => Reflect.defineMetadata(IPC_INVOKE, event, target, propertyName);
 };
 
-export const IpcOn = (event: string): MethodDecorator => {
+export const IpcSend = (event: string): MethodDecorator => {
   if (!event) throw new Error('ipc on event is required');
   return (target, propertyName) => Reflect.defineMetadata(IPC_ON, event, target, propertyName);
 };

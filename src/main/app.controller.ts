@@ -1,12 +1,12 @@
 import { AppService } from '@main/app.service';
-import { Controller, Inject, IpcInvoke, IpcOn } from './utils/decorators';
+import { Controller, Inject, IpcInvoke, IpcSend } from './utils/decorators';
 
 @Controller()
 export class AppController {
   constructor(@Inject(AppService) private appService: AppService) {
   }
 
-  @IpcOn('reply-msg')
+  @IpcSend('reply-msg')
   public replyMsg(msg: string) {
     return `${this.appService.getDelayTime()} seconds later, the main process replies to your message: ${msg}`;
   }
