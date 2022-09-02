@@ -25,6 +25,8 @@ class App {
     return this.app;
   }
 
+  invoke = ipcRenderer.invoke.bind(ipcRenderer);
+
   on = (channel: string, listener: Listener) => {
     this.seq += 1;
     const callback = (event: IpcRendererEvent, ...args: any[]) => listener(...args);
