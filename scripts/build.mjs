@@ -1,18 +1,21 @@
 /* eslint-disable no-console */
-import { CliOptions } from 'electron-builder/out/builder';
 import path from 'path';
-import { build as viteBuild, InlineConfig } from 'vite';
+import { build as viteBuild } from 'vite';
 import { build as electronBuild, createTargets, Platform } from 'electron-builder';
 
 process.env.MODE = process.env.MODE || 'production';
-const join = (...paths: string[]) => path.join(process.cwd(), ...paths);
+/** @type {(...paths: string[]) => string} */
+const join = (...paths) => path.join(process.cwd(), ...paths);
 
-type ConfigOption = {
-  name: 'main' | 'preload';
-  configFile: string;
-};
+/** @typedef PackageName 'main' | 'preload' */
+/** @typedef ConfigOption {{ name: PackageName; configFile: string; }} */
+/** @typedef import('vite').InlineConfig */
 
-const config = ({ name, configFile }: ConfigOption) => ({
+/**
+ * @param {ConfigOption} option
+ * @return {InlineConfig}
+ */
+const config = ({ name, configFile }) => /** @type {InlineConfig} */({
   configFile,
   root: join('src', name),
   mode: process.env.MODE,
@@ -26,14 +29,14 @@ const config = ({ name, configFile }: ConfigOption) => ({
       },
     },
   },
-} as InlineConfig);
+});
 
 const buildConfig = {
   main: config({ name: 'main', configFile: 'config/vite.config.main.ts' }),
   preload: config({ name: 'preload', configFile: 'config/vite.config.main.ts' }),
-  renderer: { configFile: 'config/vite.config.renderer.ts' } as InlineConfig,
-  mac: { targets: createTargets([Platform.MAC], 'default', 'universal') } as CliOptions,
-  window: { targets: createTargets([Platform.WINDOWS], 'nsis', 'x64') } as CliOptions,
+  renderer: { configFile: 'config/vite.config.renderer.ts' },
+  mac: { targets: createTargets([Platform.MAC], 'default', 'universal') },
+  window: { targets: createTargets([Platform.WINDOWS], 'nsis', 'x64') },
 };
 
 const build = async () => {
