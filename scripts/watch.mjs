@@ -1,20 +1,18 @@
-/* eslint-disable no-console */
 import chalk from 'chalk';
 import { ChildProcess, spawn } from 'child_process';
 import electron from 'electron';
 import path from 'path';
-import { build, createServer, ResolvedServerUrls, ViteDevServer } from 'vite';
+import { build, createServer } from 'vite';
+
+/** @typedef WatcherOption {{ name: 'preload' | 'main'; configFile: string; writeBundle(): void | Promise<void> }} */
+/** @typedef import('vite').ViteDevServer */
 
 process.env.MODE = process.env.MODE ?? 'development';
-const join = (...paths: string[]) => path.join(process.cwd(), ...paths);
+/** @type {(...paths: string[]) => string} */
+const join = (...paths) => path.join(process.cwd(), ...paths);
 
-type WatcherOption = {
-  name: 'preload' | 'main';
-  configFile: string;
-  writeBundle(): void | Promise<void>
-};
-
-const watcher = ({ name, configFile, writeBundle }: WatcherOption) => build({
+/** @param {WatcherOption} option */
+const watcher = ({ name, configFile, writeBundle }) => build({
   configFile,
   mode: process.env.MODE,
   root: join('src', name),
@@ -37,13 +35,14 @@ const createDevServer = async () => {
     configFile: 'config/vite.config.renderer.ts',
   }).then(({ listen }) => listen());
 
-  [process.env.VITE_DEV_SERVER_URL] = (server.resolvedUrls as ResolvedServerUrls).local;
+  [process.env.VITE_DEV_SERVER_URL] = server.resolvedUrls.local;
   console.log(chalk.green(`🚀 dev-server running at: ${chalk.underline(process.env.VITE_DEV_SERVER_URL)}`));
 
   return server;
 };
 
-const setupPreloadWatcher = async (server: ViteDevServer) => {
+/** @param {ViteDevServer} server  */
+const setupPreloadWatcher = async (server) => {
   await watcher({
     name: 'preload',
     configFile: 'config/vite.config.main.ts',
@@ -55,8 +54,10 @@ const setupPreloadWatcher = async (server: ViteDevServer) => {
   return server;
 };
 
-const setupMainWatcher = async (server: ViteDevServer) => {
-  let electronApp: ChildProcess | null = null;
+/** @param {ViteDevServer} server  */
+const setupMainWatcher = async (server) => {
+  /** @type {ChildProcess} */
+  let electronApp = null;
   await watcher({
     name: 'main',
     configFile: 'config/vite.config.main.ts',
