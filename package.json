@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-vite-example",
+  "name": "electron-react-vite-template",
   "version": "1.0.0",
   "main": "dist/main.js",
-  "description": "electron react vite example",
+  "description": "electron react vite template",
   "author": "ukyi",
   "license": "MIT",
   "keywords": [
