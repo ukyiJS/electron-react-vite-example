@@ -1,31 +1,43 @@
-import { contextBridge, IpcRenderer, ipcRenderer } from 'electron';
+import { contextBridge, IpcRenderer, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type AppInterface = {
-  on(...params: Parameters<IpcRenderer['on']>): number;
+type Listener = (...args: any[]) => void;
+
+type AppInterface = {
+  on(channel: string, listener: Listener): number;
   off(id: number): void;
-  invoke: IpcRenderer['invoke'];
+  invoke: IpcRenderer['invoke']
 };
 
 type PairMap = {
   [key: number]: {
     channel: string;
-    listener: Parameters<IpcRenderer['on']>[1];
+    listener: Listener;
   }
 };
 
-const pairMap = {} as PairMap;
-let seq = 0;
-contextBridge.exposeInMainWorld('app', {
-  invoke: ipcRenderer.invoke.bind(ipcRenderer),
-  on: (channel, listener) => {
-    seq += 1;
-    pairMap[seq] = { channel, listener };
-    ipcRenderer.on(channel, listener);
-    return seq;
-  },
-  off: id => {
-    const { channel, listener } = pairMap[id];
+class App {
+  static app: AppInterface;
+  private seq = 0;
+  private pairMap: PairMap = {};
+
+  static of(): AppInterface {
+    if (!this.app) this.app = new App() as unknown as AppInterface;
+    return this.app;
+  }
+
+  on = (channel: string, listener: Listener) => {
+    this.seq += 1;
+    const callback = (event: IpcRendererEvent, ...args: any[]) => listener(...args);
+    this.pairMap[this.seq] = { channel, listener: callback };
+    ipcRenderer.on(channel, callback);
+    return this.seq;
+  };
+
+  off = (id: number) => {
+    const { channel, listener } = this.pairMap[id];
     ipcRenderer.removeListener(channel, listener);
-    delete pairMap[id];
-  },
-} as AppInterface);
+    delete this.pairMap[id];
+  };
+}
+
+contextBridge.exposeInMainWorld('app', App.of());
