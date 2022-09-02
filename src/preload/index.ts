@@ -2,7 +2,7 @@ import { contextBridge, IpcRenderer, ipcRenderer, IpcRendererEvent } from 'elect
 
 type Listener = (...args: any[]) => void;
 
-type AppInterface = {
+export type AppInterface = {
   on(channel: string, listener: Listener): number;
   off(id: number): void;
   invoke: IpcRenderer['invoke']
@@ -21,7 +21,7 @@ class App {
   private pairMap: PairMap = {};
 
   static of(): AppInterface {
-    if (!this.app) this.app = new App() as unknown as AppInterface;
+    if (!this.app) this.app = new App();
     return this.app;
   }
 
