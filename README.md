@@ -1,4 +1,4 @@
-# Electron React Vite example
+# Electron React Vite template
 
 [![electron](https://img.shields.io/static/v1?label=electron&message=20.0.3&color=green)](https://www.electronjs.org)
 [![react](https://img.shields.io/static/v1?label=react&message=18.2.0&color=blue)](https://reactjs.org)
@@ -7,7 +7,7 @@
 
 ## About
 
-Electron + React-ts + Vite 예제
+Electron + React-ts + Vite template
 
 ## Technologies
 
