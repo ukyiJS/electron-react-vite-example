@@ -20,6 +20,7 @@ export default defineConfig({
   },
   build: {
     outDir: join('dist'),
+    emptyOutDir: false,
   },
   plugins: [
     react(),
