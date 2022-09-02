@@ -13,7 +13,7 @@ export class AppController {
 
   @IpcInvoke('send-msg')
   public async handleSendMsg(msg: string): Promise<string> {
-    setTimeout(() => this.replyMsg(msg), this.appService.getDelayTime() * 1000);
+    this.replyMsg(msg);
     return `The main process received your message: ${msg}`;
   }
 }
