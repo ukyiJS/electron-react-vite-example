@@ -13,8 +13,6 @@ export class MainWindow {
   }
 
   private init = async () => {
-    await app.whenReady();
-
     const bounds = this.setting.get('bounds') ?? {};
     const window = new BrowserWindow({
       ...bounds,
