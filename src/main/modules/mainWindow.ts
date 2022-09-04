@@ -24,8 +24,8 @@ export class MainWindow {
       },
     });
     container.register(BrowserWindow, { useValue: window });
+    window.once('ready-to-show', () => setTimeout(() => window.show(), 100));
     await window.loadURL(this.pageUrl);
-    window.once('ready-to-show', window.show);
 
     this.addWindowHideEvent(window);
     this.addWindowMoveEvent(window);
