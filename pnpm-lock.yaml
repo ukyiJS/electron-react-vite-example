@@ -10,6 +10,7 @@ specifiers:
   '@vitejs/plugin-react': ^2.0.1
   axios: ^0.27.2
   chalk: ^5.0.1
+  dotenv: ^16.0.2
   electron: ^20.1.1
   electron-builder: ^23.3.3
   electron-debug: ^3.2.0
@@ -49,6 +50,7 @@ devDependencies:
   '@typescript-eslint/parser': 5.36.1_shit3uhl6a7megkzgoz6xssnfa
   '@vitejs/plugin-react': 2.0.1_vite@3.0.9
   chalk: 5.0.1
+  dotenv: 16.0.2
   electron: 20.1.1
   electron-builder: 23.3.3
   electron-debug: 3.2.0
@@ -1525,6 +1527,11 @@ packages:
 
   /dotenv-expand/5.1.0:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
+    dev: true
+
+  /dotenv/16.0.2:
+    resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
+    engines: {node: '>=12'}
     dev: true
 
   /dotenv/9.0.2:
