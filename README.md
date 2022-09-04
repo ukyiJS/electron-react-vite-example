@@ -19,6 +19,5 @@ Electron + React-ts + Vite template
 |           [typescript](https://www.typescriptlang.org)            |
 |         [tsyringe](https://github.com/microsoft/tsyringe)         |
 | [reflect-metadata](https://github.com/rbuckton/reflect-metadata)  |
-|             [tsx](https://github.com/esbuild-kit/tsx)             |
 |              [axios](https://github.com/axios/axios)              |
 |                   [eslint](https://eslint.org)                    |
