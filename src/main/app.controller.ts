@@ -1,7 +1,7 @@
-import { AppService } from '@main/app.service';
-import { Controller, Inject, IpcInvoke, IpcSend } from './utils/decorators';
+import { AppService } from './app.service';
+import { Inject, Injectable, IpcInvoke, IpcSend } from './utils/decorators';
 
-@Controller()
+@Injectable()
 export class AppController {
   constructor(@Inject(AppService) private appService: AppService) {
   }
