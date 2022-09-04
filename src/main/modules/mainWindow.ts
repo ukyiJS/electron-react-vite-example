@@ -1,39 +1,67 @@
-import { BrowserWindow, BrowserWindowConstructorOptions, app } from 'electron';
-import path from 'path';
+import { app, BrowserWindow } from 'electron';
+import debounce from 'lodash/debounce';
+import { join } from 'path';
 import { container } from 'tsyringe';
+import { Inject, Injectable } from '../utils/decorators';
+import { Setting } from './setting';
 
+@Injectable()
 export class MainWindow {
-  private static mainWindow: MainWindow;
+  private pageUrl = import.meta.env.DEV ? import.meta.env.VITE_DEV_SERVER_URL : new URL('dist/index.html', `file://${__dirname}`).toString();
 
-  init = async () => {
-    const config: BrowserWindowConstructorOptions = {
+  constructor(@Inject(Setting) private setting: Setting) {
+  }
+
+  private init = async () => {
+    await app.whenReady();
+
+    const bounds = this.setting.get('bounds') ?? {};
+    const window = new BrowserWindow({
+      ...bounds,
       show: false,
       vibrancy: 'under-window',
       visualEffectState: 'active',
       webPreferences: {
-        nodeIntegration: false,
+        nodeIntegration: true,
         contextIsolation: true,
-        preload: path.join(app.getAppPath(), 'dist', 'preload.js'),
+        preload: join(app.getAppPath(), 'dist', 'preload.js'),
       },
-    };
-    container.register(BrowserWindow, { useValue: new BrowserWindow(config) });
-    const mainWindow = container.resolve(BrowserWindow);
+    });
+    container.register(BrowserWindow, { useValue: window });
 
-    const pageUrl = import.meta.env.DEV ? import.meta.env.VITE_DEV_SERVER_URL : new URL('dist/index.html', `file://${__dirname}`).toString();
-    await mainWindow.loadURL(pageUrl);
-    mainWindow.once('ready-to-show', () => mainWindow.show());
+    window.once('ready-to-show', () => window.show());
 
-    return mainWindow;
+    await window.loadURL(this.pageUrl);
+    this.addWindowHideEvent(window);
+    this.addWindowMoveEvent(window);
+    this.addWindowResizeEvent(window);
+
+    return window;
   };
 
-  static create = async () => {
-    if (!this.mainWindow) this.mainWindow = new MainWindow();
+  create = async () => {
+    const window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed()) ?? await this.init();
 
-    let window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
-
-    if (!window) window = await this.mainWindow.init();
     if (window.isMinimized()) window.restore();
     if (!window.isVisible()) window.show();
     window.focus();
+  };
+
+  private addWindowHideEvent = (window: BrowserWindow) => {
+    let isAppQuitting = false;
+    app.on('before-quit', () => (isAppQuitting = true));
+
+    window.on('close', e => {
+      if (!isAppQuitting) e.preventDefault();
+      window.hide();
+    });
+  };
+
+  private addWindowMoveEvent = (window: BrowserWindow) => {
+    window.addListener('move', debounce(() => this.setting.set('bounds', window.getBounds()), 300));
+  };
+
+  private addWindowResizeEvent = (window: BrowserWindow) => {
+    window.addListener('resize', debounce(() => this.setting.set('bounds', window.getBounds()), 300));
   };
 }
