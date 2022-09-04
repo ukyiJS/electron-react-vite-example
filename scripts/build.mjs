@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
+import commandLineArgs from 'command-line-args';
+import { build as electronBuild, createTargets, Platform } from 'electron-builder';
 import path from 'path';
 import { build as viteBuild } from 'vite';
-import { build as electronBuild, createTargets, Platform } from 'electron-builder';
+
+const { publish } = commandLineArgs([
+  { name: 'publish', alias: 'p', type: String },
+]);
 
 process.env.MODE = process.env.MODE || 'production';
 /** @type {(...paths: string[]) => string} */
@@ -33,8 +38,8 @@ const buildConfig = {
   main: config({ name: 'main', configFile: 'config/vite.config.main.ts' }),
   preload: config({ name: 'preload', configFile: 'config/vite.config.main.ts' }),
   renderer: { configFile: 'config/vite.config.renderer.ts' },
-  mac: { targets: createTargets([Platform.MAC], 'default', 'universal') },
-  window: { targets: createTargets([Platform.WINDOWS], 'nsis', 'x64') },
+  mac: { targets: createTargets([Platform.MAC], 'default', 'universal'), publish },
+  window: { targets: createTargets([Platform.WINDOWS], 'nsis', 'x64'), publish },
 };
 
 const build = async () => {
