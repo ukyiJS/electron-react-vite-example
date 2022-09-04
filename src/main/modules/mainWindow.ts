@@ -19,8 +19,6 @@ export class MainWindow {
     const window = new BrowserWindow({
       ...bounds,
       show: false,
-      vibrancy: 'under-window',
-      visualEffectState: 'active',
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
@@ -28,10 +26,9 @@ export class MainWindow {
       },
     });
     container.register(BrowserWindow, { useValue: window });
-
-    window.once('ready-to-show', () => window.show());
-
     await window.loadURL(this.pageUrl);
+    window.once('ready-to-show', window.show);
+
     this.addWindowHideEvent(window);
     this.addWindowMoveEvent(window);
     this.addWindowResizeEvent(window);
@@ -41,10 +38,10 @@ export class MainWindow {
 
   create = async () => {
     const window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed()) ?? await this.init();
-
     if (window.isMinimized()) window.restore();
-    if (!window.isVisible()) window.show();
     window.focus();
+
+    return window;
   };
 
   private addWindowHideEvent = (window: BrowserWindow) => {
