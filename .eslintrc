@@ -16,6 +16,8 @@
     "no-await-in-loop": "off",
     "no-promise-executor-return": "off",
     "no-restricted-syntax": "off",
+    "no-param-reassign": "off",
+    "no-return-assign": "off",
     "max-len": "off",
     "object-curly-newline": "off",
     "class-methods-use-this": "off",
